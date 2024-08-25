@@ -57,10 +57,10 @@ const InputList = () => {
         </ul>
       </div>
       <h1>Total: {caluculateTotalAmount()} Sol</h1>
+      <p><Link href="/Output"></Link></p>
       {wishList.length > 0 && (
         <div>
           <button onClick={generateShareableLink}>Generate Link</button>
-          <p><Link href="/Output"></Link></p>
         </div>
       )}
     </div>
