@@ -6,7 +6,6 @@ export default function Home() {
   return (
     <div className="justify-center items-center min-h-min">
       <InputList />
-      <OutputList />
     </div>
   );
 }

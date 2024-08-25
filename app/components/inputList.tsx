@@ -60,7 +60,6 @@ const InputList = () => {
       {wishList.length > 0 && (
         <div>
           <button onClick={generateShareableLink}>Generate Link</button>
-          <p><Link href="/Output">here</Link></p>
         </div>
       )}
     </div>
