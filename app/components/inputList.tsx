@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import React, { useState } from 'react'
+import Output from "../Output/page";
 
 type Wish = {
     wish: string,
@@ -58,6 +60,7 @@ const InputList = () => {
       {wishList.length > 0 && (
         <div>
           <button onClick={generateShareableLink}>Generate Link</button>
+          <p><Link href="/Output"></Link></p>
         </div>
       )}
     </div>
