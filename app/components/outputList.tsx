@@ -1,16 +1,12 @@
-// import React from 'react'
-// import wishList from "./inputList"
+"use client"
+import React from 'react'
 
-// function outputList({ wishList: [] }) {
-//   return (
-//     <div>
-//         {wishList.map((item: any, index: number) => (
-//             <li key={index}>
-//               {item.wish}: {item.amount} Sol
-//             </li>
-//           ))}
-//     </div>
-//   )
-// }
+function outputList({ wishList: [] }) {
+  return (
+    <div>
+        <p>Hello Output</p>
+    </div>
+  )
+}
 
-// export default outputList
+export default outputList

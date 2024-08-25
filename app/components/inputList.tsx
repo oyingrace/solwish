@@ -25,10 +25,8 @@ const InputList = () => {
     };
 
     const generateShareableLink = () => {
-        const encodedWish = encodeURIComponent(JSON.stringify(wishList));
-        const shareableLink = `${window.location.origin}/?data=${encodedWish}`
-        console.log(shareableLink)
-        alert(`Shareable Link: ${shareableLink}`);
+        const encodedWish = "https://solwish.vercel.app/output"
+        alert(`Shareable Link: ${encodedWish}`);
     };
     
   return (
