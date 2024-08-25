@@ -27,7 +27,7 @@ const InputList = () => {
     };
 
     const generateShareableLink = () => {
-        const encodedWish = "https://solwish.vercel.app/output"
+        const encodedWish = "https://solwish.vercel.app/Output"
         alert(`Shareable Link: ${encodedWish}`);
     };
     
