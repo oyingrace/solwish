@@ -1,5 +1,5 @@
 "use client"
-import OutputList from "./components/outputList";
+import OutputList from "./Output/page";
 import InputList from "./components/inputList";
 
 export default function Home() {

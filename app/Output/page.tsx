@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 
-function outputList() {
+function Page() {
   return (
     <div>
         <p>Hello Output</p>
@@ -9,4 +9,4 @@ function outputList() {
   )
 }
 
-export default outputList
+export default Page
