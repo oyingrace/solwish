@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 
-function outputList({ wishList: [] }) {
+function outputList() {
   return (
     <div>
         <p>Hello Output</p>
