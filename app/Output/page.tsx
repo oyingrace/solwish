@@ -1,7 +1,7 @@
 'use client'
 
 // pages/shared.tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 interface WishlistItem {
@@ -78,33 +78,35 @@ const SharedPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
-        <h1 className="text-2xl font-bold mb-6">Shared Wishlist</h1>
+      <Suspense fallback={<div>Loading Wishlist...</div>}>
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
+          <h1 className="text-2xl font-bold mb-6">Shared Wishlist</h1>
 
-        <ul className="list-none p-0">
-          {wishlist.map((item, index) => (
-            <li
-              key={index}
-              // className={flex items-center mb-2 ${checkedItems.has(index) ? 'line-through text-gray-500' : ''}}
-            >
-              <input
-                type="checkbox"
-                checked={checkedItems.has(index)}
-                onChange={() => handleCheckboxChange(index)}
-                className="mr-2"
-              />
-              <span className="flex-1">{item.name}: ${item.price}</span>
-            </li>
-          ))}
-        </ul>
+          <ul className="list-none p-0">
+            {wishlist.map((item, index) => (
+              <li
+                key={index}
+                // className={flex items-center mb-2 ${checkedItems.has(index) ? 'line-through text-gray-500' : ''}}
+              >
+                <input
+                  type="checkbox"
+                  checked={checkedItems.has(index)}
+                  onChange={() => handleCheckboxChange(index)}
+                  className="mr-2"
+                />
+                <span className="flex-1">{item.name}: ${item.price}</span>
+              </li>
+            ))}
+          </ul>
 
-        <h2 className="text-lg font-semibold mb-2">Total Price: ${totalPrice}</h2>
-        <button
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        >
-          Proceed to Payment
-        </button>
-      </div>
+          <h2 className="text-lg font-semibold mb-2">Total Price: ${totalPrice}</h2>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Proceed to Payment
+          </button>
+        </div>
+      </Suspense>
     </div>
   );
 };
