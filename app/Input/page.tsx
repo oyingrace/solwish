@@ -72,7 +72,7 @@ const Home = () => {
         type="number"
         value={price}
         onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}
-        placeholder="Item price"
+        placeholder="0"
         className="border p-2 mb-2 w-full"
       />
       <button
