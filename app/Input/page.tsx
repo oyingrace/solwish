@@ -1,21 +1,21 @@
-"use client"
+'use client';
 
-// inputPage.tsx
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import ReciepientAddressModal from '../components/ReciepientAddressModal';
+import CopyLinkPopup from '../components/popup';
+import ReciepientAddressModal from '../components/ReciepientAddressModal'; // Import recipient modal
 
 interface WishlistItem {
   name: string;
   price: number;
 }
 
-const InputPage = () => {
+const Home = () => {
   const [name, setName] = useState<string>('');
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<string>(''); // Changed to string for better input handling
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [shareLink, setShareLink] = useState<string | null>(null); // State to store the generated link
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [recipientAddress, setRecipientAddress] = useState<string>(''); // Store recipient address
   const router = useRouter();
@@ -28,11 +28,11 @@ const InputPage = () => {
   }, [wishlist]);
 
   const handleAddToWishlist = () => {
-    if (name && price > 0) {
-      const newItem: WishlistItem = { name, price };
+    if (name && price && parseFloat(price) > 0) {
+      const newItem: WishlistItem = { name, price: parseFloat(price) };
       setWishlist((prev) => [...prev, newItem]);
       setName('');
-      setPrice(0);
+      setPrice(''); // Reset price after adding
     } else {
       alert('Please enter a valid name and price');
     }
@@ -44,15 +44,14 @@ const InputPage = () => {
   };
 
   const handleShare = () => {
-    if (wishlist.length > 0 && recipientAddress) {
+    if (wishlist.length > 0) {
       const wishlistString = JSON.stringify(wishlist);
-
-      const link = `${window.location.origin}/SharedPage?wishlist=${encodeURIComponent(
-        wishlistString
-      )}&recipient=${recipientAddress}`;
-      setShareLink(link); // Store the generated link in state
+      const link = `${window.location.origin}/Output?wishlist=${encodeURIComponent(wishlistString)}`;
+      setShareLink(link); // Store the generated link in state to display in popup
+      setName('');
+      setPrice(''); // Reset input fields after generating link
     } else {
-      alert('Your wishlist or recipient address is missing!');
+      alert('Your wishlist is empty!');
     }
   };
 
@@ -69,6 +68,10 @@ const InputPage = () => {
     closeModal();
   };
 
+  const handleClosePopup = () => {
+    setShareLink(null); // Close the popup
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-semibold mb-4">Create Wishlist</h1>
@@ -82,8 +85,8 @@ const InputPage = () => {
       <input
         type="number"
         value={price}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}
-        placeholder="0"
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(e.target.value)}
+        placeholder="Enter price"
         className="border p-2 mb-2 w-full"
       />
       <button
@@ -103,9 +106,16 @@ const InputPage = () => {
       </ul>
       <h3 className="text-lg font-semibold mb-4">Total Price: ${totalPrice}</h3>
 
+      {/* Recipient address modal */}
+      <ReciepientAddressModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSave={saveRecipientAddress}
+      />
+
       <button
         onClick={openModal}
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mb-4"
       >
         Add Recipient Address
       </button>
@@ -116,25 +126,10 @@ const InputPage = () => {
       >
         Generate Shareable Link
       </button>
-
-      {isModalOpen && (
-        <ReciepientAddressModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          onSave={saveRecipientAddress}
-        />
-      )}
-
-      {shareLink && (
-        <div className="mt-4">
-          <p>Share this link:</p>
-          <a href={shareLink} target="_blank" className="text-blue-500 underline">
-            {shareLink}
-          </a>
-        </div>
-      )}
+      {/* Display the Copy Link Popup if a link is generated */}
+      {shareLink && <CopyLinkPopup link={shareLink} onClose={handleClosePopup} />}
     </div>
   );
 };
 
-export default InputPage;
+export default Home;

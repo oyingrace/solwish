@@ -1,4 +1,6 @@
 // pages/sharedpage.tsx
+'use client'
+
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -13,7 +15,7 @@ interface WishlistItem {
   price: number;
 }
 
-const SharedPage = () => {
+const Page = () => {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -105,4 +107,4 @@ const SharedPage = () => {
   );
 };
 
-export default SharedPage;
+export default Page;
