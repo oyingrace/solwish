@@ -1,8 +1,14 @@
-'use client'
+"use client"
 
-// pages/shared.tsx
-import { useEffect, useState, Suspense } from 'react';
+// pages/sharedpage.tsx
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import SolanaWalletProvider from '../components/WalletProvider'; // Import the custom wallet provider
+
+const Payment = lazy(() => import('../components/payment'));
+const SolwishSkeleton = lazy(() => import('../components/lazyload'));
 
 interface WishlistItem {
   name: string;
@@ -11,14 +17,14 @@ interface WishlistItem {
 
 const SharedPage = () => {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
-  const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set()); // Set of checked item indices
+  const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const { publicKey } = useWallet(); // Use wallet context
 
   useEffect(() => {
     const encodedWishlist = searchParams.get('wishlist');
-
     if (encodedWishlist) {
       try {
         const decodedWishlist = decodeURIComponent(encodedWishlist as string);
@@ -29,7 +35,7 @@ const SharedPage = () => {
           calculateTotal(parsedWishlist, new Set());
         } else {
           setError('Invalid wishlist data.');
-        };
+        }
       } catch (err) {
         setError('Error decoding or parsing wishlist.');
       }
@@ -49,36 +55,19 @@ const SharedPage = () => {
 
   const calculateTotal = (items: WishlistItem[], checkedItems: Set<number>) => {
     const total = items
-      .filter((_, index) => !checkedItems.has(index)) // Filter out checked items
+      .filter((_, index) => !checkedItems.has(index))
       .reduce((acc, item) => acc + item.price, 0);
     setTotalPrice(total);
   };
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-red-100 text-red-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">Error</h2>
-          <p>{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!wishlist.length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-yellow-100 text-yellow-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">No Wishlist Found</h2>
-          <p>It looks like there is no wishlist data to display. Please check your link and try again.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
-      <Suspense fallback={<div>Loading Wishlist...</div>}>
+    <SolanaWalletProvider> {/* Wrap the page with the wallet provider */}
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
+        {/* Wallet connection button for User B */}
+        <div className="w-full flex justify-end p-4">
+          <WalletMultiButton />
+        </div>
+
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
           <h1 className="text-2xl font-bold mb-6">Shared Wishlist</h1>
 
@@ -86,7 +75,7 @@ const SharedPage = () => {
             {wishlist.map((item, index) => (
               <li
                 key={index}
-                // className={flex items-center mb-2 ${checkedItems.has(index) ? 'line-through text-gray-500' : ''}}
+                className={`flex items-center mb-2 ${checkedItems.has(index) ? 'line-through text-gray-500' : ''}`}
               >
                 <input
                   type="checkbox"
@@ -100,14 +89,14 @@ const SharedPage = () => {
           </ul>
 
           <h2 className="text-lg font-semibold mb-2">Total Price: ${totalPrice}</h2>
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            Proceed to Payment
-          </button>
+
+          {/* Lazy-loaded payment component */}
+          <Suspense fallback={<SolwishSkeleton />}>
+            <Payment totalPrice={totalPrice} />
+          </Suspense>
         </div>
-      </Suspense>
-    </div>
+      </div>
+    </SolanaWalletProvider>
   );
 };
 

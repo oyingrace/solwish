@@ -8,11 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      keyframes: {
+        slide: {
+          '0%': {transform: 'translateY(0)'},
+          '100%': {transform: 'translateY(100)'},
+        },
+        rotate: {
+          '0%': {transform: 'rotate(0deg)'},
+          '100%': {transform: 'translateY(100deg)'},
+        },
       },
+      animation: {
+        slide: 'slide 10s ease-out infinite',
+        rotate: 'rotate 10s linear infinite',
+      }
     },
   },
   plugins: [],

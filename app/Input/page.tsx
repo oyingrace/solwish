@@ -1,21 +1,23 @@
-'use client'
+"use client"
 
-// pages/index.tsx
+// inputPage.tsx
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import CopyLinkPopup from '../components/popup';
+import ReciepientAddressModal from '../components/ReciepientAddressModal';
 
 interface WishlistItem {
   name: string;
   price: number;
 }
 
-const Home = () => {
+const InputPage = () => {
   const [name, setName] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [shareLink, setShareLink] = useState<string | null>(null); // State to store the generated link
+  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [recipientAddress, setRecipientAddress] = useState<string>(''); // Store recipient address
   const router = useRouter();
 
   useEffect(() => {
@@ -42,20 +44,29 @@ const Home = () => {
   };
 
   const handleShare = () => {
-    if (wishlist.length > 0) {
+    if (wishlist.length > 0 && recipientAddress) {
       const wishlistString = JSON.stringify(wishlist);
 
-      const link = `${window.location.origin}/Output?wishlist=${encodeURIComponent(wishlistString)}`;
-      setShareLink(link); // Store the generated link in state to display in popup
-      setName('');
-      setPrice(0)
+      const link = `${window.location.origin}/SharedPage?wishlist=${encodeURIComponent(
+        wishlistString
+      )}&recipient=${recipientAddress}`;
+      setShareLink(link); // Store the generated link in state
     } else {
-      alert('Your wishlist is empty!');
+      alert('Your wishlist or recipient address is missing!');
     }
   };
 
-  const handleClosePopup = () => {
-    setShareLink(null); // Close the popup
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const saveRecipientAddress = (address: string) => {
+    setRecipientAddress(address);
+    closeModal();
   };
 
   return (
@@ -93,16 +104,37 @@ const Home = () => {
       <h3 className="text-lg font-semibold mb-4">Total Price: ${totalPrice}</h3>
 
       <button
+        onClick={openModal}
+        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+      >
+        Add Recipient Address
+      </button>
+
+      <button
         onClick={handleShare}
         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
       >
         Generate Shareable Link
       </button>
 
-      {/* Display the Copy Link Popup if a link is generated */}
-      {shareLink && <CopyLinkPopup link={shareLink} onClose={handleClosePopup} />}
+      {isModalOpen && (
+        <ReciepientAddressModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onSave={saveRecipientAddress}
+        />
+      )}
+
+      {shareLink && (
+        <div className="mt-4">
+          <p>Share this link:</p>
+          <a href={shareLink} target="_blank" className="text-blue-500 underline">
+            {shareLink}
+          </a>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Home;
+export default InputPage;
