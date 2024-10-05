@@ -1,5 +1,3 @@
-"use client"
-
 // pages/sharedpage.tsx
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -20,11 +18,14 @@ const SharedPage = () => {
   const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+  const [recipientAddress, setRecipientAddress] = useState<string>(''); // State for recipient address
   const searchParams = useSearchParams();
   const { publicKey } = useWallet(); // Use wallet context
 
   useEffect(() => {
     const encodedWishlist = searchParams.get('wishlist');
+    const recipient = searchParams.get('recipient'); // Get recipient address from query params
+
     if (encodedWishlist) {
       try {
         const decodedWishlist = decodeURIComponent(encodedWishlist as string);
@@ -39,6 +40,10 @@ const SharedPage = () => {
       } catch (err) {
         setError('Error decoding or parsing wishlist.');
       }
+    }
+
+    if (recipient) {
+      setRecipientAddress(recipient); // Set the recipient address
     }
   }, [searchParams]);
 
@@ -92,7 +97,7 @@ const SharedPage = () => {
 
           {/* Lazy-loaded payment component */}
           <Suspense fallback={<SolwishSkeleton />}>
-            <Payment totalPrice={totalPrice} />
+            <Payment totalPrice={totalPrice} recipientAddress={recipientAddress} /> {/* Pass recipient address */}
           </Suspense>
         </div>
       </div>
