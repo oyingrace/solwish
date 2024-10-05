@@ -43,15 +43,30 @@ const Home = () => {
     setTotalPrice(total);
   };
 
+  // const handleShare = () => {
+  //   if (wishlist.length > 0) {
+  //     const wishlistString = JSON.stringify(wishlist);
+  //     const link = `${window.location.origin}/Output?wishlist=${encodeURIComponent(wishlistString)}`;
+  //     setShareLink(link); // Store the generated link in state to display in popup
+  //     setName('');
+  //     setPrice(''); // Reset input fields after generating link
+  //   } else {
+  //     alert('Your wishlist is empty!');
+  //   }
+  // };
+
   const handleShare = () => {
-    if (wishlist.length > 0) {
+    if (wishlist.length > 0 && recipientAddress) { // Ensure recipient address is available
       const wishlistString = JSON.stringify(wishlist);
-      const link = `${window.location.origin}/Output?wishlist=${encodeURIComponent(wishlistString)}`;
+  
+      // Add recipientAddress to the URL along with wishlist
+      const link = `${window.location.origin}/Output?wishlist=${encodeURIComponent(wishlistString)}&recipient=${encodeURIComponent(recipientAddress)}`;
+  
       setShareLink(link); // Store the generated link in state to display in popup
       setName('');
       setPrice(''); // Reset input fields after generating link
     } else {
-      alert('Your wishlist is empty!');
+      alert('Your wishlist or recipient address is missing!');
     }
   };
 
