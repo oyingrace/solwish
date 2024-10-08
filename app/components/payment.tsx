@@ -35,7 +35,8 @@ const Payment: FC<PaymentProps> = ({ totalPrice, recipientAddress }) => {
     setIsProcessing(true);
 
     try {
-      const lamportsTotal = totalPrice * 1e9; // Convert total price (SOL) to lamports
+      const roundedTotalPrice = parseFloat(totalPrice.toFixed(2));
+      const lamportsTotal = roundedTotalPrice * 1e9; // Convert total price (SOL) to lamports
       const feeLamports = 0.005 * 1e9; // 0.005 SOL fee to Solwish app
       const lamportsToSend = lamportsTotal - feeLamports; // Remaining amount to send to User A
 

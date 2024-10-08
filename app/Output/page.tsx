@@ -1,4 +1,3 @@
-// pages/sharedpage.tsx
 'use client'
 
 import { useEffect, useState, Suspense, lazy } from 'react';
@@ -6,9 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import SolanaWalletProvider from '../components/WalletProvider'; // Import the custom wallet provider
+import Lazyload from '../components/lazyload';
 
 const Payment = lazy(() => import('../components/payment'));
-const SolwishSkeleton = lazy(() => import('../components/lazyload'));
 
 interface WishlistItem {
   name: string;
@@ -69,14 +68,17 @@ const Page = () => {
 
   return (
     <SolanaWalletProvider> {/* Wrap the page with the wallet provider */}
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
-        {/* Wallet connection button for User B */}
-        <div className="w-full flex justify-end p-4">
-          <WalletMultiButton />
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
+        <div className='w-full flex flex-col md:flex-row justify-between'>
+          <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-0">Solwish</h1>
+          {/* Wallet connection button for User B */}
+          <div className="w-full md:w-auto flex justify-end p-4">
+            <WalletMultiButton />
+          </div>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
-          <h1 className="text-2xl font-bold mb-6">Shared Wishlist</h1>
+          <h1 className="text-xl md:text-2xl font-bold mb-6">Shared Wishlist</h1>
 
           <ul className="list-none p-0">
             {wishlist.map((item, index) => (
@@ -90,16 +92,17 @@ const Page = () => {
                   onChange={() => handleCheckboxChange(index)}
                   className="mr-2"
                 />
-                <span className="flex-1">{item.name}: ${item.price}</span>
+                <span className="flex-1">{item.name}: {item.price} Sol</span>
               </li>
             ))}
           </ul>
 
-          <h2 className="text-lg font-semibold mb-2">Total Price: ${totalPrice}</h2>
-
+          <h2 className="text-lg md:text-xl font-semibold mb-2">Total Price: {totalPrice.toFixed(2)} Sol</h2>
           {/* Lazy-loaded payment component */}
-          <Suspense fallback={<SolwishSkeleton />}>
-            <Payment totalPrice={totalPrice} recipientAddress={recipientAddress} /> {/* Pass recipient address */}
+          <Suspense fallback={<Lazyload />}>
+            <div className="flex justify-center mt-6">
+              <Payment totalPrice={totalPrice} recipientAddress={recipientAddress} /> {/* Pass recipient address */}
+            </div>
           </Suspense>
         </div>
       </div>

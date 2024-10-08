@@ -1,50 +1,42 @@
+'use client'
+
 import React from 'react'
+import Link from 'next/link'
+import Input from '../Input/page'
+import Image from 'next/image'
 
 function footer() {
   return (
-    <div className="h-96 px-[120px] py-[50px] bg-[#111111] justify-center items-center gap-[370px] inline-flex">
-        <div className="justify-start items-start flex">
-            <div className="w-[280px] h-16 px-10 py-5 bg-[#e1f6ce] rounded-lg shadow justify-center items-center gap-2.5 flex">
-                <div className="w-[230px] h-6 text-center text-[#111111] text-xl font-normal font-[Gotham] leading-10 tracking-wide">Create your wishlist</div>
+    <div className="w-full h-auto px-[120px] py-[50px] bg-[#111111] text-white justify-center items-center">
+        <div className='flex justify-between gap-4'>
+            <div>
+                <button><Link href="/Input">Create your wallet</Link></button>
+            </div>
+            <div>
+                <h1>ABOUT SOLWISH</h1>
+                <p>Solwish is a site that helps people write a customised wishlist, send the link to their friends, and get their wishes funded <span><Link href="/">Read more</Link></span></p>
+            </div>
+            <div>
+                <h1>SUBSCRIBE</h1>
+                <p>Sign Up for Gifts, Giveaways & Good News!</p>
+                <input
+                type="text"
+                placeholder="Your email address"
+                className="border-none rounded py-3 pl-[27px] mb-4 w-full sm:w-[550px] placeholder:text-[12px]"
+                />
             </div>
         </div>
-        <div className="w-[1200px] h-12 pt-6 border-t border-white/20 justify-between items-end flex">
-            <div className="grow shrink basis-0 h-6 justify-start items-end gap-2 flex" />
-            <div className="justify-end items-end gap-10 flex">
-                <div className="justify-center items-center gap-4 flex">
-                    <div className="w-6 flex-col justify-center items-center inline-flex">
-                        <div className="w-6 h-6 relative" />
-                    </div>
-                    <div className="w-6 flex-col justify-center items-center inline-flex">
-                        <div className="w-6 h-6 relative" />
-                    </div>
-                    <div className="w-6 flex-col justify-center items-center inline-flex">
-                        <div className="w-6 h-6 relative" />
-                    </div>
-                    <div className="w-6 flex-col justify-center items-center inline-flex">
-                        <div className="w-6 h-6 relative" />
-                    </div>
-                    <div className="w-6 flex-col justify-center items-center inline-flex">
-                        <div className="w-6 h-6 relative" />
-                    </div>
-                </div>
-                <div className="rounded-xl border justify-center items-end gap-2 flex">
-                    <div className="text-white text-base font-medium font-[Gotham] uppercase leading-normal tracking-wide">back to top</div>
-                </div>
-            </div>
-        </div>
-        <div className="grow shrink basis-0 h-[140px] justify-start items-start gap-[120px] flex">
-            <div className="w-[238px] flex-col justify-start items-start gap-10 inline-flex">
-                <div className="self-stretch text-white/80 text-sm font-medium font-['Gotham'] capitalize leading-none">ABOUT SOLWISH</div>
-                <div className="self-stretch"><span className="text-white/60 text-xs font-normal font-[Gotham] leading-none tracking-tight">Solwish is a site that helps people write a customised wishlist, send the link to their friends, and get their wishes funded </span><span className="text-white text-xs font-normal font-[Gotham] underline leading-none tracking-tight">Read more</span></div>
-            </div>
-            <div className="grow shrink basis-0 self-stretch flex-col justify-start items-start gap-10 inline-flex">
-                <div className="text-center text-white/80 text-sm font-medium font-[Gotham] capitalize leading-none">SUBSCRIBE</div>
-                <div className="self-stretch h-[84px] flex-col justify-center items-center gap-3 flex">
-                    <div className="self-stretch text-white/70 text-[10px] font-normal font-[Gotham] leading-none tracking-tight">Sign Up for Gifts, Giveaways & Good News!</div>
-                    <div className="self-stretch h-10 p-3 bg-[#e1f6ce] rounded border justify-start items-center gap-10 inline-flex">
-                        <div className="text-[#111111]/40 text-[11px] font-normal font-[Gotham] leading-none tracking-tight">Your email address</div>
-                    </div>
+        <div className='flex justify-between px-[120px]'>
+            <div><h1>Solwish</h1></div>
+            <div>
+                <div>
+                    <ul className='flex gap-4'>
+                        <li><Link href=""><Image src="" alt="" width={30} height={30}/></Link></li>
+                        <li><Link href=""><Image src="" alt="" width={30} height={30}/></Link></li>
+                        <li><Link href=""><Image src="" alt="" width={30} height={30}/></Link></li>
+                        <li><Link href=""><Image src="" alt="" width={30} height={30}/></Link></li>
+                        <li><Link href=""><Image src="" alt="" width={30} height={30}/></Link></li>
+                    </ul>
                 </div>
             </div>
         </div>

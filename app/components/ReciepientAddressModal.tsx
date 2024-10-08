@@ -22,7 +22,7 @@ const RecipientAddressModal: FC<RecipientAddressModalProps> = ({ isOpen, onClose
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-lg font-bold mb-4">Enter Recipient Address</h2>
+        <h2 className="text-lg font-bold mb-4">Enter Wallet Address</h2>
         <input
           type="text"
           placeholder="Enter Solana Address"
