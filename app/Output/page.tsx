@@ -209,7 +209,7 @@ const Page = () => {
                   onChange={() => handleCheckboxChange(index)}
                   className="mr-2"
                 />
-                <span className="flex-1">{item.name}: {item.price} Sol</span>
+                <span className="flex-1">{item.name}: {item.price}Sol</span>
               </li>
             ))}
           </ul>
