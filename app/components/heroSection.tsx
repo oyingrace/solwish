@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Input from '../Input/page';
 import { ChevronDown, MessageCircle, Menu, X } from 'lucide-react';
 
 const Hero = () => {
@@ -31,10 +32,10 @@ const Hero = () => {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-red-800 p-4">
-          <Link href="/services" className="block text-white py-2">Services</Link>
-          <Link href="/about" className="block text-white py-2">About</Link>
-          <Link href="/how-it-works" className="block text-white py-2">How it works</Link>
-          <Link href="/faqs" className="block text-white py-2">FAQs</Link>
+          <Link href="/" className="block text-white py-2">Services</Link>
+          <Link href="/" className="block text-white py-2">About</Link>
+          <Link href="/" className="block text-white py-2">How it works</Link>
+          <Link href="/" className="block text-white py-2">FAQs</Link>
         </div>
       )}
 
@@ -53,7 +54,7 @@ const Hero = () => {
               more awkward gifts or unfulfilled desires. Solwish
               revolutionizes gifting with Solana-powered funding
             </p>
-            <Link href="/create-wishlist" className="bg-green-100 text-gray-800 px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold inline-block text-sm md:text-base">
+            <Link href="/Input" className="bg-green-100 text-gray-800 px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold inline-block text-sm md:text-base">
               Create your wishlist
             </Link>
           </div>
