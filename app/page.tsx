@@ -7,7 +7,6 @@ import HeroSection from "./components/heroSection";
 import FirstHero from "./components/firstHero";
 import SecondHero from "./components/secondHero";
 import ThirdHero from "./components/thirdHero";
-import FourthSection from "./components/fourthSection";
 import FAQSection from "./components/FaqSection";
 import Footer from "./components/footer";
 
