@@ -136,11 +136,13 @@ const Page = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [recipientAddress, setRecipientAddress] = useState<string>('');
-  const searchParams = typeof window !== 'undefined' ? useSearchParams() : null;
+
+  // Call useSearchParams unconditionally
+  const searchParams = useSearchParams();
   const { publicKey } = useWallet();
 
   useEffect(() => {
-    if (searchParams) {
+    if (typeof window !== 'undefined') {
       const encodedWishlist = searchParams.get('wishlist');
       const recipient = searchParams.get('recipient');
 
@@ -209,7 +211,7 @@ const Page = () => {
                   onChange={() => handleCheckboxChange(index)}
                   className="mr-2"
                 />
-                <span className="flex-1">{item.name}: {item.price}Sol</span>
+                <span className="flex-1">{item.name}: {item.price} Sol</span>
               </li>
             ))}
           </ul>
