@@ -136,39 +136,33 @@ const Page = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [recipientAddress, setRecipientAddress] = useState<string>('');
-  const [isClient, setIsClient] = useState(false); // State to ensure we are on the client side
 
-  const searchParams = useSearchParams(); // Can be used, but only after the client has mounted
-  const { publicKey } = useWallet();
+  const searchParams = useSearchParams(); // Ensure this is used correctly
 
   useEffect(() => {
-    setIsClient(true); // Ensures we are in the browser
+    const encodedWishlist = searchParams.get('wishlist');
+    const recipient = searchParams.get('recipient');
 
-    if (isClient) {
-      const encodedWishlist = searchParams.get('wishlist');
-      const recipient = searchParams.get('recipient');
+    if (encodedWishlist) {
+      try {
+        const decodedWishlist = decodeURIComponent(encodedWishlist);
+        const parsedWishlist = JSON.parse(decodedWishlist);
 
-      if (encodedWishlist) {
-        try {
-          const decodedWishlist = decodeURIComponent(encodedWishlist as string);
-          const parsedWishlist = JSON.parse(decodedWishlist);
-
-          if (Array.isArray(parsedWishlist)) {
-            setWishlist(parsedWishlist);
-            calculateTotal(parsedWishlist, new Set());
-          } else {
-            setError('Invalid wishlist data.');
-          }
-        } catch (err) {
-          setError('Error decoding or parsing wishlist.');
+        if (Array.isArray(parsedWishlist)) {
+          setWishlist(parsedWishlist);
+          calculateTotal(parsedWishlist, new Set());
+        } else {
+          setError('Invalid wishlist data.');
         }
-      }
-
-      if (recipient) {
-        setRecipientAddress(recipient);
+      } catch (err) {
+        setError('Error decoding or parsing wishlist.');
       }
     }
-  }, [searchParams, isClient]);
+
+    if (recipient) {
+      setRecipientAddress(recipient);
+    }
+  }, [searchParams]);
 
   const handleCheckboxChange = (index: number) => {
     const updatedCheckedItems = new Set(checkedItems);
@@ -187,11 +181,6 @@ const Page = () => {
       .reduce((acc, item) => acc + item.price, 0);
     setTotalPrice(total);
   };
-
-  // Prevent rendering until client-side is confirmed
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <SolanaWalletProvider>
